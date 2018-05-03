@@ -31,26 +31,26 @@ __Files we use:__
 
 ### Training data
 Since it's a clustering problem, it's more important to train the clusters. We only use 7100 users for traing, and make the data in to a torch of size (7100,27278,3) which means (number of users, number of movies, (rating, mean_rating, genres)). Since genres are given as text, we use one-hot-coding to turn it into binary int, and then decimal int.
-![屏幕快照 2018-05-02 下午2.43.11.png](resources/C608ADA4760D219EC2FC89DEDCD83DB3.png =331x465)
+![2.43.11.png](resources/C608ADA4760D219EC2FC89DEDCD83DB3.png =331x465)
 ### Testing data
 We only use 20 users for testing case. And for those testing users, we split the most recently 20 ratings used to compared with the recommended movies, and the past records to go through the encoder and k-means to do the recommendation
 
 ## Architecture
 The whole architecture is: first we use encoder to reduce the number of features which makes it simpler for the kmeans part, then use k-means to group the users into 9 clusters. After calculating the scores movies in each clusters, we recommend 30 movies which have not been seen by the users to them.
-![屏幕快照 2018-05-02 下午2.43.21.png](resources/E0E82EAC9A56BF24EDAE8F58CA3FED98.png =814x322)
+![2.43.21.png](resources/E0E82EAC9A56BF24EDAE8F58CA3FED98.png =814x322)
 ### Encoder part
-![屏幕快照 2018-05-02 下午2.46.33.png](resources/475E22E4FE0B8816883BA6808A2A92BC.png =393x154)
+![2.46.33.png](resources/475E22E4FE0B8816883BA6808A2A92BC.png =393x154)
 First, we  train an autoencoder to make the decoded and input matrix as samilar as possible.
 
 To make sure AE’s weights  are  orthogonal , we add penalty to __MSE loss:__
 
-![屏幕快照 2018-05-02 下午2.46.06.png](resources/59F2F6757C032FE7F708DB14724E134E.png =345x38)
+![2.46.06.png](resources/59F2F6757C032FE7F708DB14724E134E.png =345x38)
 __epoch vs loss:__
-![屏幕快照 2018-05-02 下午2.46.45.png](resources/A86D494400FAC494E9AF67DD8D215EBD.png =385x261)
+![2.46.45.png](resources/A86D494400FAC494E9AF67DD8D215EBD.png =385x261)
 
 The encoded tensor represents input tensor well, but with fewer features, which makes it easier for clustering  in k-means part.
 
-![屏幕快照 2018-05-02 下午2.52.36.png](resources/0240B0E21D96089848A1DCE30FC35253.png =390x305)
+![2.52.36.png](resources/0240B0E21D96089848A1DCE30FC35253.png =390x305)
 
 ###k-means part:
 Then use encoded  tensor to do a k-means clustering which generates 9 clusters of user-groups.
@@ -73,22 +73,22 @@ Since ‘Drama’ and ‘Comedy show up frequently, we do a genre analysis among
 From the plot we could find some genres, like Drama and Comedy,  are ‘common types’ which are specified to most movies.
 
 __after scaling:__
-![屏幕快照 2018-05-02 下午3.11.44.png](resources/572A1F1F336E00E1EE71ED64E7DF71BD.png =906x387)
-![屏幕快照 2018-05-02 下午3.11.57.png](resources/07BD65E78E7621C5B4FF53B144A5A5B5.png =900x375)
-![屏幕快照 2018-05-02 下午3.12.08.png](resources/430DBB58EA90B059C0C062EE0B51D1B4.png =905x385)
-![屏幕快照 2018-05-02 下午3.12.16.png](resources/AE0253C673AFE6A7B6D172388A448E64.png =906x389)
-![屏幕快照 2018-05-02 下午3.12.24.png](resources/E930288C95161D99E7132B3DD9226E9C.png =882x380)
+![4.png](resources/572A1F1F336E00E1EE71ED64E7DF71BD.png =906x387)
+![3.11.57.png](resources/07BD65E78E7621C5B4FF53B144A5A5B5.png =900x375)
+![3.12.08.png](resources/430DBB58EA90B059C0C062EE0B51D1B4.png =905x385)
+![3.12.16.png](resources/AE0253C673AFE6A7B6D172388A448E64.png =906x389)
+![3.12.24.png](resources/E930288C95161D99E7132B3DD9226E9C.png =882x380)
 As we can see, the difference after scaling is kind of obvious.
 
 ## Recommen Movies
 For every users go through the encoder and kmeans to put him into a cluster. Then recommend those movies with highest scores rated by users in the same cluster to him.
-![屏幕快照 2018-05-02 上午1.27.32.png](resources/2C876F589BF21E090F48A4C2A510F7A2.png =817x677)
+![1.27.32.png](resources/2C876F589BF21E090F48A4C2A510F7A2.png =817x677)
 ## Test Case
 Recommend 30 movies to a user based on his past watching history.  Compare the results with those movies he  most recently watched.
 here shoes one user's result:
-![屏幕快照 2018-05-02 上午1.01.07.png](resources/B12A98C5E1B1B02477BB73F65712CDF8.png =702x327)
-![屏幕快照 2018-05-02 上午1.01.19.png](resources/706EE04321FEDA5BBE1DB20EC858B839.png =688x170)
-![屏幕快照 2018-05-02 上午1.01.33.png](resources/76AD975344B616206ED712BEB04B4C30.png =699x256)
+![1.01.07.png](resources/B12A98C5E1B1B02477BB73F65712CDF8.png =702x327)
+![1.01.19.png](resources/706EE04321FEDA5BBE1DB20EC858B839.png =688x170)
+![1.01.33.png](resources/76AD975344B616206ED712BEB04B4C30.png =699x256)
 __Recommend:__
 Beauty and the Beast
 Speed
