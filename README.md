@@ -1,1 +1,4 @@
-https://docs.google.com/viewer?url=https://github.com/chenzhaoxi/Movie-Recommendation/blob/master/Movie%20Recommendation%20System.pdf
+# Movie Recommendation system
+-- based on autoencoder and kmeans
+
+## More details described in the pdf file.
